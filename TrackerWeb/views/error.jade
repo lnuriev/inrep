@@ -1,0 +1,10 @@
+extends layout
+
+block content
+
+  div(class=['panel', 'panel-default'])
+    div.panel-heading
+      h1.panel-title= message
+    div.panel-body
+      h2 Error #{error.status}
+      pre #{error.stack}

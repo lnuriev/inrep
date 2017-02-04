@@ -1,0 +1,12 @@
+{
+    "DEFAULT_PORT": 1337,
+    "QUEUE_INCOMING": "incomingtracks",
+    "QUEUE_PROCESSED": "processedtracks",
+    "QUEUE_AGGREGATED": "aggregatedtracks",
+    "BLOB_INCOMING": "incomingtracks",
+    "TABLE_AGGREGATED": "aggregatedtracks",
+    "TABLE_TRACKS_PARTITION": "tracks",
+    "TABLE_TOTALS_PARTITION": "totals",
+    "TABLE_TOTALS_ROWKEY": "totals",
+    "QUEUE_CHECK_INTERVAL": 1000
+}

@@ -1,0 +1,37 @@
+section.contentMap
+  article.mapArticle
+    h1 Last submitted tracks
+
+    div.liveFeed(ng-click='resetMap()')
+      h3 Distance
+      p {{totals.distance}}km
+    div.liveFeed(ng-click='getElevation(true)')
+      h3 Highest Peak
+      p {{totals.maxElevation}}m
+    div.liveFeed(ng-click='getElevation(false)')
+      h3 Lowest Trench
+      p {{totals.minElevation}}m
+    div(id='myMap')
+
+section.contentServices
+  article.serviceArticle
+    h2 Explore Trackr
+    p.separator
+
+    div(id='products-container')
+
+      div(class=['service-item', 'top-tracks'])
+        h2 Top Tracks
+        p Longest distance or time, highest altitude, fastest speed and more.
+      
+      div(class=['service-item', 'top-locations'])
+        h2 Top Locations
+        p Most visited cities, locations, businesses and other landmarks.
+
+      div(class=['service-item', 'recommended'])
+        h2 Recommended
+        p You can always find a great new spot to check out!
+
+      div(class=['service-item', 'statistics'])
+        h2 Statistics
+        p Processed data always reveals some interesting facts and information.

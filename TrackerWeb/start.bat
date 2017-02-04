@@ -1,0 +1,3 @@
+set HTTP_PROXY=
+set AZURE_STORAGE_CONNECTION_STRING=UseDevelopmentStorage=true
+npm start

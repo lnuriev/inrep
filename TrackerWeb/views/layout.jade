@@ -1,0 +1,139 @@
+doctype html
+html(ng-app='trackerApp' lang='en')
+  head
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    meta(charset='utf-8')
+    title= title
+    
+    // css
+    link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='icon' type='image/ico' href='/favicon.ico')
+    
+    // libraries
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&key=AIzaSyBw8O8eQA2MReAlwb9EYOfU00BGYdc2IOY&sensor=false')
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='/components/underscore/underscore-min.js')
+    script(type='text/javascript', src='/components/jquery/dist/jquery.min.js')
+    script(type='text/javascript', src='/components/bootstrap/dist/js/bootstrap.min.js')
+    script(type='text/javascript', src='/components/angular/angular.min.js')
+    script(type='text/javascript', src='/components/angular-route/angular-route.min.js')
+    script(type='text/javascript', src='/components/angular-socket-io/socket.min.js')
+
+    // application
+    - if (scripts)
+      - for (var i = 0; i < scripts.length; i++)
+        script(type='text/javascript', src='#{scripts[i]}')
+
+    script(type='text/javascript', src='/javascripts/app.js')
+    script(type='text/javascript', src='/javascripts/controllers.js')
+    script(type='text/javascript', src='/javascripts/directives.js')
+    script(type='text/javascript', src='/javascripts/services.js')
+
+  body(ng-controller='mainController')
+
+    section.wrapper
+      section.innerWrapper
+
+        // header
+        header.pageHeader
+          a(href='#/home'): img(src='/images/logo.png' width='200' height='100' alt='Trakr Logo')
+          nav.mainNav
+            ul.mainMenu.nav
+              li: a(data-toggle='modal' data-target='#uploadTrackModal') Upload
+              li: a(href='#/about') About
+              li: a(data-toggle='modal' data-target='#contactModal') Contact
+              li: a(href='#/news') News
+          //-
+            div.langBar
+              p.lang Language:
+              ul(id='langList')
+                li.eng
+                li.bg
+                li.rom
+                li.ger
+                li.rus
+
+        div(id='processingCount' class=['alert', 'alert-info'] role='alert' ng-class='{hidden : currentFiles.length <= 0}') You have {{currentFiles.length}} tracks enqueued for processing...
+
+        // hook for extension
+        block content
+
+        // content
+        div(ng-view)
+
+        // footer
+        footer.pageFooter
+          p 2014 © Tracker Team. All rights reserved.
+          nav.bottomNav
+            ul.footerMenu.nav
+              li: a(href='#/about') About
+              li: a(data-toggle='modal' data-target='#contactModal') Contact
+              li: a(href='#/news') News
+              li: a(href='#/terms') Terms
+            
+          div.followLinks
+            p Follow us on: 
+              <a href="#">Google+</a> |
+              <a href="#">Facebook</a> |
+              <a href="#">Twitter</a>
+
+    // upload modal
+    div(class=['modal', 'fade'] id='uploadTrackModal' tabindex='-1' role='dialog' aria-labelledby='modalLabel' aria-hidden='true')
+      div.modal-dialog
+        div.modal-content
+
+          div.modal-header
+            button.close(type='button' data-dismiss='modal' aria-label='Close'): span(aria-hidden='true') &times;
+            h4.modal-title(id='modalLabel') Upload Track
+
+          // idle state
+          div.modal-body(ng-class='{hidden : currentTrackFile.state != "idle"}')
+            form(id='uploadTrack' action='api/UploadTrack', method='get', enctype='multipart/form-data')
+              div.form-group
+                label.control-label(for='trackFile') File:
+                input(type='file' class='form-control' id='trackFile', file-model='trackFile')                    
+
+          // processing state
+          div.modal-body(ng-class='{hidden : currentTrackFile.state != "processing"}')
+            div(class=['alert', 'alert-info'] role='alert') Uploading file...
+
+          // error state
+          div.modal-body(ng-class='{hidden : currentTrackFile.state != "error"}')
+            div(class=['alert', 'alert-danger'] role='alert')
+              span(class=['glyphicon', 'glyphicon-exclamation-sign'] aria-hidden='true')
+              span  Oh-oh! An error occurred :(
+
+          // idle state
+          div.modal-footer(ng-class='{hidden : currentTrackFile.state != "idle"}')
+            button(type='button' class=['btn', 'btn-default'] data-dismiss='modal') Close
+            button(class=['btn', 'btn-primary'], type='button', ng-click='uploadTrackAction()') Go!
+
+    // contact modal
+    div(class=['modal', 'fade'] id='contactModal' tabindex='-1' role='dialog' aria-labelledby='modalLabel' aria-hidden='true')
+      div.modal-dialog
+        div.modal-content
+
+          div.modal-header
+            button.close(type='button' data-dismiss='modal' aria-label='Close'): span(aria-hidden='true') &times;
+            h4.modal-title(id='modalLabel') Contact
+
+          div.modal-body
+            form(id='contactForm' action='api/Contact', method='post', enctype='multipart/form-data')
+              div(class=['alert', 'alert-warning'] role='alert')
+                span(class=['glyphicon', 'glyphicon-exclamation-sign'] aria-hidden='true')
+                span  Not available yet! Sorry :(
+              div.form-group
+                label.control-label(for='sender') From:
+                input(type='text' class='form-control' id='from' disabled)
+              div.form-group
+                label.control-label(for='message') Message:
+                textarea(class='form-control' id='message' disabled)
+
+          div.modal-footer
+            button(type='button' class=['btn', 'btn-default'] data-dismiss='modal') Close
+            button(class=['btn', 'btn-primary'], type='button', ng-click='contact()' disabled) Send message

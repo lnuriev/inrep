@@ -1,0 +1,9 @@
+article(class=['panel', 'panel-default'])
+  div.panel-heading
+    h1.panel-title News Feed
+  div.panel-body
+    div.list-group
+      a.list-group-item(ng-repeat='item in feedItems' href='{{ item.link }}' target='_blank')
+        span.badge {{ item.date }}
+        {{ item.title }}
+        

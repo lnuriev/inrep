@@ -1,0 +1,7 @@
+Thumbs.db
+*.sublime-*
+node_modules
+local_package.csx/
+TrackerWeb/iisnode/
+TrackerWeb/uploads/
+TrackerWeb/public/components/
